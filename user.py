@@ -20,11 +20,11 @@ class User(Subscriber):
             except ValueError:
                 print("Please, verify the provided date's format and try again.")
     
-    def receive(self, message):
-        sender = message["sender"]
-        channel = message["channel"]
-        text = message["text"]
-        timestamp = message["timestamp"]
+    def receive(self, event):
+        sender = event["sender"]
+        channel = event["channel"]
+        text = event["text"]
+        timestamp = event["timestamp"]
 
         dt = datetime.fromisoformat(timestamp)
 
