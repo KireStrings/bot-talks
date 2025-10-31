@@ -6,7 +6,7 @@ class User(Subscriber):
         self.name = name or input("What is your name?")
         self.birthday = birthday or self.birth_date_validation()
         self.broker = broker
-        self.reminder_channel = f"{self.name}-rmeinders"
+        self.reminder_channel = f"{self.name}-reminders"
         self.broker.subscribe(self, self.reminder_channel)
 
     def birth_date_validation(self):
