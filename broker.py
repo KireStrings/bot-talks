@@ -10,6 +10,6 @@ class PubSubBroker:
     def unsubscribe(self, subscriber, channel):
         self.channels[channel].discard(subscriber)
 
-    def publish(self, message, channel):
+    def publish(self, event, channel):
         for subscriber in self.channels[channel]:
-            subscriber.receive(message)
+            subscriber.receive(event)

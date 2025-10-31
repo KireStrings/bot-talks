@@ -1,5 +1,6 @@
 from datetime import datetime
 from subscriber import Subscriber
+from utils.event import build_event
 
 class User(Subscriber):
     def __init__(self, broker, name=None, birthday=None):
@@ -20,8 +21,22 @@ class User(Subscriber):
                 print("Please, verify the provided date's format and try again.")
     
     def receive(self, message):
-        if self.name not in message:
-            print(f"{self.name} received the message: \n{message}")
+        sender = message["sender"]
+        channel = message["channel"]
+        text = message["text"]
+        timestamp = message["timestamp"]
 
-    def send(self, message, channel):
-        self.broker.publish(f"{self.name}: {message}", channel)
+        dt = datetime.fromisoformat(timestamp)
+
+        date_str = dt.strftime("%Y-%m-%d")
+        time_str = dt.strftime("%H:%M:%S")
+
+        if sender != self.name:
+            print(f"Channel: {channel}")
+            print(f"Date: {date_str}")
+            print(f"Time: {time_str}")
+            print(f"{self.name} received from {sender}: {text}")
+
+    def send(self, text, channel):
+        event = build_event(self.name, text, channel)
+        self.broker.publish(event, channel)
